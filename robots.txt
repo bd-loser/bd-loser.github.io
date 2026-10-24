@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://bd-loser.github.io/sitemap.xml

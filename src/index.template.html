@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>opencode for Termux — Native Android AI Coding Agent</title>
+<meta name="description" content="Run the opencode AI coding agent natively in Termux on Android. Signed apt repo, stable/beta/dev channels, aarch64 Bionic build — MIT, free, no telemetry.">
+<meta name="theme-color" content="#0b1020">
+<link rel="canonical" href="https://bd-loser.github.io/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://bd-loser.github.io/">
+<meta property="og:title" content="opencode for Termux — Native Android AI Coding Agent">
+<meta property="og:description" content="Native aarch64 opencode build for Android 10+ via a signed apt repo. Also: bun-termux, a Bionic-patched Bun runtime.">
+<meta property="og:image" content="https://bd-loser.github.io/assets/tui-welcome.png">
+<meta property="og:image:alt" content="Termux on Android running the opencode terminal user interface welcome screen">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="opencode for Termux — Native Android AI Coding Agent">
+<meta name="twitter:description" content="Native aarch64 opencode build for Android 10+ via a signed apt repo. Also: bun-termux, a Bionic-patched Bun runtime.">
+<meta name="twitter:image" content="https://bd-loser.github.io/assets/tui-welcome.png">
+<meta name="generator" content="static build (src/build.sh)">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b1020'/%3E%3Ctext x='32' y='42' font-family='monospace' font-size='28' font-weight='bold' fill='%2358a6ff' text-anchor='middle'%3E%26gt;_%3C/text%3E%3C/svg%3E">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "url": "https://bd-loser.github.io/",
+      "name": "bd-loser's Termux tooling",
+      "description": "Native Android builds of the opencode AI coding agent and a Bionic-patched Bun runtime, delivered through a signed apt repository."
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "opencode-bionic",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Android 10+ (aarch64)",
+      "license": "https://opensource.org/licenses/MIT",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "codeRepository": "https://github.com/bd-loser/opencode-bionic",
+      "softwareVersion": "__V_STABLE__",
+      "author": { "@type": "Person", "name": "bd-loser" },
+      "keywords": "android, termux, opencode, opentui, bun, bionic, aarch64, arm64, coding-agent, ai-agent, ai-coding-agent, ai-coding-assistant, claude-code-alternative",
+      "description": "The open-source opencode AI coding agent, rebuilt natively for Android's Bionic libc and installed in Termux through a signed apt repository with stable, beta and dev channels."
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "bun-termux",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Android 10+ (aarch64)",
+      "license": "https://opensource.org/licenses/MIT",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "codeRepository": "https://github.com/bd-loser/bun-termux",
+      "softwareVersion": "__V_BUN__",
+      "author": { "@type": "Person", "name": "bd-loser" },
+      "keywords": "bun, android, termux, bionic, aarch64, runtime",
+      "description": "Bun runtime rebuilt and patched for Android's Bionic libc: SELinux-safe JIT, syscall traps and shebang remapping for Termux."
+    }
+  ]
+}
+</script>
+<style>
+:root{--bg:#0b1020;--ink:#e6edf3;--dim:#9aa7b8;--accent:#58a6ff;--card:#12182b;--line:#24304a;--ok:#3fb950}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:960px;margin:0 auto;padding:0 20px}
+a{color:var(--accent)}
+a:hover{color:#79c0ff}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.skip{position:absolute;left:-999px;top:0;background:var(--accent);color:#04121f;padding:8px 14px;border-radius:0 0 8px 0}
+.skip:focus{left:0}
+header.site{padding:56px 0 24px;text-align:left}
+h1{font-size:clamp(1.7rem,4.5vw,2.6rem);line-height:1.15;margin:0 0 12px;color:#fff}
+.sub{color:var(--dim);max-width:52ch;margin:0}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 0;padding:0}
+.badges img{height:22px;border-radius:4px}
+section{margin:40px 0;padding:24px;background:var(--card);border:1px solid var(--line);border-radius:14px}
+h2{font-size:1.35rem;margin:0 0 14px;color:#fff}
+h2 .n{color:var(--accent);margin-right:6px}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.grid article{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.grid h3{margin:0 0 6px;font-size:1rem;color:#fff}
+.grid p{margin:0;color:var(--dim);font-size:.92rem}
+input[type=radio]{position:absolute;opacity:0;width:0;height:0}
+.chlab{display:inline-block;padding:7px 16px;margin:2px 6px 14px 0;border:1px solid var(--line);border-radius:999px;cursor:pointer;background:var(--bg);color:var(--dim);font-weight:600}
+input[type=radio]:checked + .chlab{background:var(--accent);border-color:var(--accent);color:#04121f}
+input[type=radio]:focus-visible + .chlab{outline:2px solid var(--accent);outline-offset:2px}
+.cmd{position:relative;margin:0}
+.cmd pre{background:#05080f;border:1px solid var(--line);border-radius:10px;padding:14px 56px 14px 14px;overflow-x:auto;margin:0;display:none;font-size:.95rem}
+#r-stable:checked ~ .cmds #cmd-stable, #r-beta:checked ~ .cmds #cmd-beta, #r-dev:checked ~ .cmds #cmd-dev{display:block}
+button.copy{position:absolute;top:10px;right:10px;background:var(--card);border:1px solid var(--line);border-radius:8px;color:var(--dim);padding:6px 10px;cursor:pointer;font-size:.8rem}
+button.copy:hover{color:var(--ink)}
+html:not(.js) button.copy{display:none}
+figure{margin:14px 0;text-align:center}
+figure img{max-width:min(360px,90%);height:auto;border:1px solid var(--line);border-radius:12px}
+figcaption{color:var(--dim);font-size:.85rem;margin-top:8px}
+.shots{display:flex;gap:18px;justify-content:center;flex-wrap:wrap}
+.faq details{border-top:1px solid var(--line);padding:12px 2px}
+.faq details:first-of-type{border-top:0}
+.faq summary{cursor:pointer;font-weight:600;color:#fff}
+.faq p{color:var(--dim);margin:8px 0 0}
+footer.site{border-top:1px solid var(--line);margin-top:48px;padding:20px 0 40px;color:var(--dim);font-size:.88rem}
+.card2{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:16px}
+.card2 p{color:var(--dim)}
+</style>
+<script>document.documentElement.classList.add("js")</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap">
+
+<header class="site">
+  <h1>opencode for Termux — a native Android AI coding agent</h1>
+  <p class="sub">Run the open-source <strong>opencode</strong> terminal coding agent natively on your Android phone: a self-hosted alternative to cloud coding agents, rebuilt for Bionic aarch64 — no proot, no chroot, no root, no glibc.</p>
+  <p class="badges">
+    <img src="assets/badge-stable.svg" alt="stable version __V_STABLE__" width="104" height="22">
+    <img src="assets/badge-beta.svg" alt="beta version __V_BETA__" width="150" height="22">
+    <img src="assets/badge-dev.svg" alt="dev version __V_DEV__" width="140" height="22">
+    <img src="assets/badge-bun.svg" alt="bun-termux version __V_BUN__" width="150" height="22">
+  </p>
+</header>
+
+<main id="main">
+
+<section aria-labelledby="h-install">
+  <h2 id="h-install"><span class="n">1</span>One command to install</h2>
+  <p>Pick a channel, paste the command inside Termux. Afterwards <code>pkg upgrade opencode</code> keeps you current on that channel.</p>
+  <div role="radiogroup" aria-label="Release channel">
+    <input type="radio" name="ch" id="r-stable" checked>
+    <label class="chlab" for="r-stable">stable</label>
+    <input type="radio" name="ch" id="r-beta">
+    <label class="chlab" for="r-beta">beta</label>
+    <input type="radio" name="ch" id="r-dev">
+    <label class="chlab" for="r-dev">dev</label>
+    <div class="cmds">
+      <p class="cmd"><pre id="cmd-stable"><code>curl -fsSL https://raw.githubusercontent.com/bd-loser/opencode-bionic/main/repo-setup.sh | bash</code></pre><button class="copy" type="button" data-for="cmd-stable">copy</button></p>
+      <p class="cmd"><pre id="cmd-beta"><code>curl -fsSL https://raw.githubusercontent.com/bd-loser/opencode-bionic/main/repo-setup.sh | OPENCODE_CHANNEL=beta bash</code></pre><button class="copy" type="button" data-for="cmd-beta">copy</button></p>
+      <p class="cmd"><pre id="cmd-dev"><code>curl -fsSL https://raw.githubusercontent.com/bd-loser/opencode-bionic/main/repo-setup.sh | OPENCODE_CHANNEL=dev bash</code></pre><button class="copy" type="button" data-for="cmd-dev">copy</button></p>
+    </div>
+  </div>
+  <p style="color:var(--dim);font-size:.9rem">stable tracks upstream release tags · beta and dev track the 2.x rolling lines (beta recommended for v2) · signed repository, one package: <code>opencode</code>.</p>
+</section>
+
+<section aria-labelledby="h-features">
+  <h2 id="h-features"><span class="n">2</span>What's inside</h2>
+  <div class="grid">
+    <article><h3>Native, not emulated</h3><p>Bionic aarch64 build — links Android's own libc directly. No proot, no chroot, no VM, no root.</p></article>
+    <article><h3>Real terminal UI</h3><p>The TUI runs on opentui, rebuilt for Android as the @androidtui packages — rendered on-device, 16 KiB page aligned.</p></article>
+    <article><h3>Terminal sessions that work</h3><p>Interactive PTYs via a Bionic-rebuilt bun-pty and a static-Bionic persistent pty service — real shell sessions, real tmux-style workflows.</p></article>
+    <article><h3>Signed apt repository</h3><p>Three channels (stable / beta / dev) in a GPG-signed repo. One build per upstream version, auto-synced from upstream about hourly.</p></article>
+    <article><h3>Powered by patched Bun</h3><p>bun-termux is Bun rebuilt for Bionic: SELinux-safe JIT, syscall traps, shebang remapping — the engine the agent runs on.</p></article>
+    <article><h3>MIT, free, private</h3><p>Same MIT license as upstream opencode. Nothing collected, nothing phoned home, everything open.</p></article>
+  </div>
+</section>
+
+<section aria-labelledby="h-shots">
+  <h2 id="h-shots"><span class="n">3</span>Screenshots</h2>
+  <div class="shots">
+    <figure>
+      <img src="assets/tui-welcome.png" alt="Terminal running the opencode TUI welcome screen on an Android phone in Termux" width="720" height="1600" loading="eager">
+      <figcaption>The opencode TUI welcome screen, right after install.</figcaption>
+    </figure>
+    <figure>
+      <img src="assets/tui-models.png" alt="opencode model picker in Termux showing free and paid model options" width="720" height="1600" loading="lazy">
+      <figcaption>The model picker — free models included, start coding without paying.</figcaption>
+    </figure>
+  </div>
+  <p style="color:var(--dim);font-size:.9rem">Model-agnostic: Anthropic, OpenAI, OpenRouter, Ollama — any OpenAI-compatible endpoint, configured exactly like upstream (<a href="https://opencode.ai/docs">opencode.ai/docs</a>).</p>
+</section>
+
+<section aria-labelledby="h-bun">
+  <h2 id="h-bun"><span class="n">4</span>bun-termux: Bionic-patched Bun</h2>
+  <div class="card2">
+    <p>The same signed pipeline also ships <strong>bun-termux</strong> — the Bun runtime rebuilt to link Android's Bionic libc, so any Bun tooling runs in Termux without glibc tricks.</p>
+    <p class="cmd" style="position:relative;margin:12px 0 6px"><pre id="cmd-bun" style="display:block"><code>curl -fsSL https://raw.githubusercontent.com/bd-loser/bun-termux/main/scripts/install.sh | bash</code></pre><button class="copy" type="button" data-for="cmd-bun">copy</button></p>
+    <p style="color:var(--dim);font-size:.9rem">Current: v__V_BUN__ · MIT · <a href="https://github.com/bd-loser/bun-termux">repository</a></p>
+  </div>
+</section>
+
+<section aria-labelledby="h-how" class="faq">
+  <h2 id="h-how"><span class="n">5</span>How it works &amp; FAQ</h2>
+  <ul style="color:var(--dim)">
+    <li>A patched Bun (<strong>bun-termux</strong>) links Bionic instead of glibc.</li>
+    <li>opentui is rebuilt for android-arm64 and published as the <strong>@androidtui</strong> packages.</li>
+    <li>An hourly watcher mirrors upstream opencode; each upstream version produces one signed <strong>.deb</strong> per channel.</li>
+  </ul>
+  <details><summary>What device do I need?</summary><p>Any aarch64 Android phone on Android 10 or newer — essentially all devices from the last seven years. Only Termux is required; no root.</p></details>
+  <details><summary>How do updates arrive?</summary><p><code>pkg upgrade opencode</code> on your chosen channel. Stable tracks upstream release tags; beta and dev track upstream's rolling branches, one release per upstream version, typically within the hour.</p></details>
+  <details><summary>Is anything collected?</summary><p>No. No analytics, no cookies, no third-party runtime requests on this site, and no telemetry in the packages. Sync state is anonymous.</p></details>
+  <details><summary>What is bun-termux for?</summary><p>It's the patched Bun runtime the agent itself runs on — and a general Bun for Termux if you want to build your own tools. Install with the command above.</p></details>
+</section>
+
+</main>
+
+<footer class="site">
+  MIT licensed — same as upstream <a href="https://github.com/anomalyco/opencode">opencode</a>. Packages: <a href="https://github.com/bd-loser/opencode-bionic">opencode-bionic</a> · <a href="https://github.com/bd-loser/bun-termux">bun-termux</a> · live package index: <a href="https://bd-loser.github.io/opencode-bionic/">package repository</a>.
+  <br>Auto-synced hourly from upstream. This page rebuilt <time datetime="__BUILD_TS__">__BUILD_TS__</time> UTC.
+</footer>
+
+</div>
+<script>
+document.querySelectorAll("button.copy").forEach(function (b) {
+  b.addEventListener("click", function () {
+    var t = document.getElementById(b.dataset["for"]);
+    navigator.clipboard.writeText(t.textContent.trim()).then(function () {
+      b.textContent = "copied";
+      setTimeout(function () { b.textContent = "copy"; }, 1200);
+    });
+  });
+});
+</script>
+</body>
+</html>

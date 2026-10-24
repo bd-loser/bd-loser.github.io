@@ -1,0 +1,35 @@
+name: deploy site
+
+on:
+  push:
+    branches: [main]
+    paths: ["src/**", "versions.env", ".github/workflows/deploy.yml"]
+  workflow_dispatch:
+  schedule:
+    - cron: "17 4 * * 1"
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-deploy
+  cancel-in-progress: true
+
+environment:
+  name: github-pages
+  url: https://bd-loser.github.io/
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build site
+        run: bash src/build.sh
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+      - uses: actions/deploy-pages@v4
