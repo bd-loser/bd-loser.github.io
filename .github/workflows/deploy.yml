@@ -3,7 +3,7 @@ name: deploy site
 on:
   push:
     branches: [main]
-    paths: ["src/**", "versions.env", ".github/workflows/deploy.yml"]
+    paths: ["src/**", "versions.env", "robots.txt", "sitemap.xml", ".github/workflows/deploy.yml"]
   workflow_dispatch:
   schedule:
     - cron: "17 4 * * 1"
@@ -20,12 +20,15 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     environment:
       name: github-pages
       url: https://bd-loser.github.io/
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Build site
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: bash src/build.sh
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

@@ -4,9 +4,19 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 mkdir -p public/assets
 
+# curl wrapper: auth only when GITHUB_TOKEN present (empty header breaks auth-less
+# calls), retries on transient TLS/CDN hiccups.
+ghcurl() {
+  if [ -n "${GITHUB_TOKEN:-}" ]; then
+    curl -fsSL --connect-timeout 15 --max-time 90 --retry 2 -H "Authorization: Bearer $GITHUB_TOKEN" "$@"
+  else
+    curl -fsSL --connect-timeout 15 --max-time 90 --retry 2 "$@"
+  fi
+}
+
 # --- screenshots (same-origin copies) ----------------------------------------
 fetch_asset() {
-  curl -fsSL --connect-timeout 15 --max-time 120 -o "public/$2" "$1"
+  ghcurl -o "public/$2" "$1"
   echo "asset $2"
 }
 fetch_asset "https://raw.githubusercontent.com/bd-loser/opencode-bionic/main/docs/assets/tui-welcome.png" assets/tui-welcome.png
@@ -14,21 +24,23 @@ fetch_asset "https://raw.githubusercontent.com/bd-loser/opencode-bionic/main/doc
 
 # --- badges (built at build-time so the page has zero third-party requests) --
 badge() { # value-with-color file
-  curl -fsSL --connect-timeout 15 --max-time 60 -o "public/assets/$2.svg" \
-    "https://img.shields.io/badge/$1"
+  ghcurl -o "public/assets/$2.svg" "https://img.shields.io/badge/$1"
+  head -c 4 <"public/assets/$2.svg" | grep -q "<svg" || { echo "badge $2 is not SVG (upstream failure)" >&2; exit 1; }
   echo "badge $2"
 }
 
 # --- robots + sitemap ---------------------------------------------------------
-cp robots.txt sitemap.xml public/
+cp robots.txt public/
 
 # --- live versions from tags + releases API, committed fallback ---------------
 PY_TAGS="$(python3 - <<'EOF'
-import json, re, subprocess
+import json, os, re, subprocess
 names = []
 for page in range(1, 6):
     raw = subprocess.run(
-        ["curl", "-fsSL", f"https://api.github.com/repos/bd-loser/opencode-bionic/tags?per_page=100&page={page}"],
+        (["curl", "-fsSL", "--retry", "2", "-H", f"Authorization: Bearer {os.environ['GITHUB_TOKEN']}"]
+          if os.environ.get("GITHUB_TOKEN") else ["curl", "-fsSL", "--retry", "2"]) +
+        [f"https://api.github.com/repos/bd-loser/opencode-bionic/tags?per_page=100&page={page}"],
         capture_output=True, text=True, timeout=90)
     if raw.returncode:
         break
@@ -36,7 +48,7 @@ for page in range(1, 6):
 if not names:
     raise SystemExit(1)
 def pick(pat):
-    v = sorted(n for n in names if re.fullmatch(pat, n))
+    v = sorted((n for n in names if re.fullmatch(pat, n)), key=lambda n: [int(x) for x in re.findall(r"\d+", n)])
     return (v[-1][1:] if v else "")
 print(pick(r"v[0-9]+\.[0-9]+\.[0-9]+"))
 print(pick(r"v[0-9.]+-beta\.[0-9a-f]{8}"))
@@ -44,8 +56,7 @@ print(pick(r"v[0-9.]+-dev\.[0-9a-f]{8}"))
 EOF
 )" || PY_TAGS=""
 
-V_BUN="$(curl -fsSL --connect-timeout 15 --max-time 60 \
-  "https://api.github.com/repos/bd-loser/bun-termux/releases/latest" \
+V_BUN="$(ghcurl "https://api.github.com/repos/bd-loser/bun-termux/releases/latest" \
   | python3 -c 'import json,sys; t=json.load(sys.stdin).get("tag_name",""); print(t[1:] if t.startswith("v") else t)')" \
   || V_BUN=""
 
@@ -63,11 +74,14 @@ V_DEV="$(echo "$PY_TAGS" | sed -n 3p)";     : "${V_DEV:=$FALLBACK_DEV}"
 echo "versions: stable=$V_STABLE beta=$V_BETA dev=$V_DEV bun=$V_BUN (api=$SANITY)"
 BUILD_TS="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 
+# --- sitemap with fresh lastmod ------------------------------------------------
+sed "s|<url><loc>https://bd-loser.github.io/</loc></url>|<url><loc>https://bd-loser.github.io/</loc><lastmod>${BUILD_TS}</lastmod></url>|" sitemap.xml > public/sitemap.xml
+
 # --- badges once versions are known -------------------------------------------
 badge "stable-${V_STABLE}-blue" badge-stable
-badge "beta-${V_BETA}-orange" badge-beta
-badge "dev-${V_DEV}-purple" badge-dev
-badge "bun.termux-${V_BUN}-green" badge-bun
+badge "beta-${V_BETA//-/--}-orange" badge-beta
+badge "dev-${V_DEV//-/--}-purple" badge-dev
+badge "bun.termux-${V_BUN//-/--}-green" badge-bun
 
 # --- inject into template ------------------------------------------------------
 python3 - "$V_STABLE" "$V_BETA" "$V_DEV" "$V_BUN" "$BUILD_TS" <<'EOF'
