@@ -17,13 +17,12 @@ concurrency:
   group: pages-deploy
   cancel-in-progress: true
 
-environment:
-  name: github-pages
-  url: https://bd-loser.github.io/
-
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: https://bd-loser.github.io/
     steps:
       - uses: actions/checkout@v4
       - name: Build site
