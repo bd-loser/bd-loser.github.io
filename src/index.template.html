@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>opencode for Termux — Native Android AI Coding Agent</title>
-<meta name="description" content="Run the opencode AI coding agent natively in Termux on Android. Signed apt repo, stable/beta/dev channels, aarch64 Bionic build. MIT, no telemetry.">
+<meta name="description" content="Run the opencode AI coding agent natively in Termux on Android. Signed apt repo, stable/dev channels, aarch64 Bionic build. MIT, no telemetry.">
 <meta name="theme-color" content="#0b1020">
 <link rel="canonical" href="https://bd-loser.github.io/">
 <meta property="og:type" content="website">
@@ -40,7 +40,7 @@
       "softwareVersion": "__V_STABLE__",
       "author": { "@type": "Person", "name": "bd-loser" },
       "keywords": "android, termux, opencode, opentui, bun, bionic, aarch64, arm64, coding-agent, ai-agent, ai-coding-agent, ai-coding-assistant, claude-code-alternative",
-      "description": "The open-source opencode AI coding agent, rebuilt natively for Android's Bionic libc and installed in Termux through a signed apt repository with stable, beta and dev channels."
+      "description": "The open-source opencode AI coding agent, rebuilt natively for Android's Bionic libc and installed in Termux through a signed apt repository with stable and dev channels."
     },
     {
       "@type": "SoftwareApplication",
@@ -88,7 +88,7 @@ input[type=radio]:checked + .chlab{background:var(--accent);border-color:var(--a
 input[type=radio]:focus-visible + .chlab{outline:2px solid var(--accent);outline-offset:2px}
 .cmd{position:relative;margin:0}
 .cmd pre{background:#05080f;border:1px solid var(--line);border-radius:10px;padding:14px 56px 14px 14px;overflow-x:auto;margin:0;display:none;font-size:.95rem}
-#r-stable:checked ~ .cmds #cmd-stable, #r-beta:checked ~ .cmds #cmd-beta, #r-dev:checked ~ .cmds #cmd-dev{display:block}
+#r-stable:checked ~ .cmds #cmd-stable, #r-dev:checked ~ .cmds #cmd-dev{display:block}
 button.copy{position:absolute;top:10px;right:10px;background:var(--card);border:1px solid var(--line);border-radius:8px;color:var(--dim);padding:6px 10px;cursor:pointer;font-size:.8rem}
 button.copy:hover{color:var(--ink)}
 html:not(.js) button.copy{display:none}
@@ -115,7 +115,6 @@ footer.site{border-top:1px solid var(--line);margin-top:48px;padding:20px 0 40px
   <p class="sub">Run the open-source <strong>opencode</strong> terminal coding agent natively on your Android phone: a self-hosted alternative to cloud coding agents, rebuilt for Bionic aarch64 — no proot, no chroot, no root, no glibc.</p>
   <p class="badges">
     <img src="assets/badge-stable.svg?v=__BUILD_TS__" alt="stable version __V_STABLE__" height="22">
-    <img src="assets/badge-beta.svg?v=__BUILD_TS__" alt="beta version __V_BETA__" height="22">
     <img src="assets/badge-dev.svg?v=__BUILD_TS__" alt="dev version __V_DEV__" height="22">
     <img src="assets/badge-bun.svg?v=__BUILD_TS__" alt="bun-termux version __V_BUN__" height="22">
   </p>
@@ -129,17 +128,14 @@ footer.site{border-top:1px solid var(--line);margin-top:48px;padding:20px 0 40px
   <div role="radiogroup" aria-label="Release channel">
     <input type="radio" name="ch" id="r-stable" checked>
     <label class="chlab" for="r-stable">stable</label>
-    <input type="radio" name="ch" id="r-beta">
-    <label class="chlab" for="r-beta">beta</label>
     <input type="radio" name="ch" id="r-dev">
     <label class="chlab" for="r-dev">dev</label>
     <div class="cmds">
       <div class="cmd"><pre id="cmd-stable"><code>curl -fsSL https://raw.githubusercontent.com/bd-loser/opencode-bionic/main/repo-setup.sh | bash</code></pre><button class="copy" type="button" data-for="cmd-stable">copy</button></div>
-      <div class="cmd"><pre id="cmd-beta"><code>curl -fsSL https://raw.githubusercontent.com/bd-loser/opencode-bionic/main/repo-setup.sh | OPENCODE_CHANNEL=beta bash</code></pre><button class="copy" type="button" data-for="cmd-beta">copy</button></div>
       <div class="cmd"><pre id="cmd-dev"><code>curl -fsSL https://raw.githubusercontent.com/bd-loser/opencode-bionic/main/repo-setup.sh | OPENCODE_CHANNEL=dev bash</code></pre><button class="copy" type="button" data-for="cmd-dev">copy</button></div>
     </div>
   </div>
-  <p style="color:var(--dim);font-size:.9rem">stable tracks upstream release tags · beta and dev track the 2.x rolling lines (beta recommended for v2) · signed repository, one package: <code>opencode</code>.</p>
+  <p style="color:var(--dim);font-size:.9rem">stable tracks upstream release tags · dev tracks the 2.x rolling line (recommended for v2) · signed repository, one package: <code>opencode</code>.</p>
 </section>
 
 <section aria-labelledby="h-features">
@@ -148,7 +144,7 @@ footer.site{border-top:1px solid var(--line);margin-top:48px;padding:20px 0 40px
     <article><h3>Native, not emulated</h3><p>Bionic aarch64 build — links Android's own libc directly. No proot, no chroot, no VM, no root.</p></article>
     <article><h3>Real terminal UI</h3><p>The TUI runs on opentui, rebuilt for Android as the @androidtui packages — rendered on-device, 16 KiB page aligned.</p></article>
     <article><h3>Terminal sessions that work</h3><p>Interactive PTYs via a Bionic-rebuilt bun-pty and a static-Bionic persistent pty service — real shell sessions, real tmux-style workflows.</p></article>
-    <article><h3>Signed apt repository</h3><p>Three channels (stable / beta / dev) in a GPG-signed repo. One build per upstream version, auto-synced from upstream about hourly.</p></article>
+    <article><h3>Signed apt repository</h3><p>Two channels (stable / dev) in a GPG-signed repo. One build per upstream version, auto-synced from upstream about hourly.</p></article>
     <article><h3>Powered by patched Bun</h3><p>bun-termux is Bun rebuilt for Bionic: SELinux-safe JIT, syscall traps, shebang remapping — the engine the agent runs on.</p></article>
     <article><h3>MIT, free, private</h3><p>Same MIT license as upstream opencode. Nothing collected, nothing phoned home, everything open.</p></article>
   </div>
@@ -186,7 +182,7 @@ footer.site{border-top:1px solid var(--line);margin-top:48px;padding:20px 0 40px
     <li>An hourly watcher mirrors upstream opencode; each upstream version produces one signed <strong>.deb</strong> per channel.</li>
   </ul>
   <details><summary>What device do I need?</summary><p>Any aarch64 Android phone on Android 10 or newer — essentially all devices from the last seven years. Only Termux is required; no root.</p></details>
-  <details><summary>How do updates arrive?</summary><p><code>pkg upgrade opencode</code> on your chosen channel. Stable tracks upstream release tags; beta and dev track upstream's rolling branches, one release per upstream version, typically within the hour.</p></details>
+  <details><summary>How do updates arrive?</summary><p><code>pkg upgrade opencode</code> on your chosen channel. Stable tracks upstream release tags; dev tracks upstream's rolling branch, one release per upstream version, typically within the hour.</p></details>
   <details><summary>Is anything collected?</summary><p>No. No analytics, no cookies, no third-party runtime requests on this site, and no telemetry in the packages. Sync state is anonymous.</p></details>
   <details><summary>What is bun-termux for?</summary><p>It's the patched Bun runtime the agent itself runs on — and a general Bun for Termux if you want to build your own tools. Install with the command above.</p></details>
 </section>

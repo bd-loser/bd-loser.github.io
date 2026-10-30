@@ -51,7 +51,6 @@ def pick(pat):
     v = sorted((n for n in names if re.fullmatch(pat, n)), key=lambda n: [int(x) for x in re.findall(r"\d+", n)])
     return (v[-1][1:] if v else "")
 print(pick(r"v[0-9]+\.[0-9]+\.[0-9]+"))
-print(pick(r"v[0-9.]+-beta\.[0-9a-f]{8}"))
 print(pick(r"v[0-9.]+-dev\.[0-9a-f]{8}"))
 EOF
 )" || PY_TAGS=""
@@ -67,11 +66,10 @@ SANITY=$([ -n "$PY_TAGS" ] && echo 1 || echo 0)
 V_STABLE="$(echo "$PY_TAGS" | sed -n 1p)"
 
 : "${V_STABLE:=$FALLBACK_STABLE}"
-V_BETA="$(echo "$PY_TAGS" | sed -n 2p)";    : "${V_BETA:=$FALLBACK_BETA}"
-V_DEV="$(echo "$PY_TAGS" | sed -n 3p)";     : "${V_DEV:=$FALLBACK_DEV}"
+V_DEV="$(echo "$PY_TAGS" | sed -n 2p)";     : "${V_DEV:=$FALLBACK_DEV}"
 : "${V_BUN:=$FALLBACK_BUN}"
 
-echo "versions: stable=$V_STABLE beta=$V_BETA dev=$V_DEV bun=$V_BUN (api=$SANITY)"
+echo "versions: stable=$V_STABLE dev=$V_DEV bun=$V_BUN (api=$SANITY)"
 BUILD_TS="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 
 # --- sitemap with fresh lastmod ------------------------------------------------
@@ -79,14 +77,13 @@ sed "s|<url><loc>https://bd-loser.github.io/</loc></url>|<url><loc>https://bd-lo
 
 # --- badges once versions are known -------------------------------------------
 badge "stable-${V_STABLE}-blue" badge-stable
-badge "beta-${V_BETA//-/--}-orange" badge-beta
 badge "dev-${V_DEV//-/--}-purple" badge-dev
 badge "bun.termux-${V_BUN//-/--}-green" badge-bun
 
 # --- inject into template ------------------------------------------------------
-python3 - "$V_STABLE" "$V_BETA" "$V_DEV" "$V_BUN" "$BUILD_TS" <<'EOF'
+python3 - "$V_STABLE" "$V_DEV" "$V_BUN" "$BUILD_TS" <<'EOF'
 import sys
-tokens = dict(zip(("__V_STABLE__", "__V_BETA__", "__V_DEV__", "__V_BUN__", "__BUILD_TS__"), sys.argv[1:6]))
+tokens = dict(zip(("__V_STABLE__", "__V_DEV__", "__V_BUN__", "__BUILD_TS__"), sys.argv[1:5]))
 src = open("src/index.template.html").read()
 for k, v in tokens.items():
     if v == "":
